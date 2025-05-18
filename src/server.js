@@ -1,17 +1,17 @@
-const express = require("express")
-const swggerUi = require("swagger-ui-express")
-const swaggerDocs = require('./configs/SwaggerConfig')
+const express = require("express");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocs = require('./configs/SwaggerConfig');
 
-const user = require('./users/routes')
+const user = require('./users/routes');
 
-const app = express()
+const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
-app.use('/api-docs', swggerUi.serve, swggerUi.setup(swaggerDocs))
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-app.use('/user', user)
+app.use('/user', user);
 
 app.listen(3000, () => {
-    console.log("Servidor rodando na porta 3000")
+    console.log("Servidor rodando na porta 3000");
 });

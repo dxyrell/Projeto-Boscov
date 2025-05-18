@@ -1,65 +1,67 @@
-const prisma = require('../../prisma/prismaClient');
-const { StatusCodes } = require('http-status-codes')
-const userSchema = require('./user.shema')
-
-const z = require('zod')
+const { StatusCodes } = require('http-status-codes');
+const z = require('zod');
+const userSchema = require('./user.shema');
+const service = require('./service');
 
 const create = async (req, res) => {
+  const validate = userSchema.safeParse(req.body);
+  if (!validate.success) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ error: validate.error.format() });
+  }
 
-    try {
+  try {
+    const user = await service.createUser(validate.data);
+    return res.status(StatusCodes.CREATED).json(user);
+  } catch (e) {
+    return res.status(StatusCodes.CONFLICT).json({ error: e.message });
+  }
+};
 
-        //Faz a validação com o Zod
-        const validate = userSchema.safeParse(req.body);
+const getAll = async (_, res) => {
+  try {
+    const users = await service.getAllUsers();
+    return res.status(StatusCodes.OK).json(users);
+  } catch (e) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: e.message });
+  }
+};
 
-        //Devolve erro caso a validação falhe
-        if (!validate.success) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ error: validate.error.format() });
-        }
+const getById = async (req, res) => {
+  try {
+    const user = await service.getUserById(req.params.id);
+    return res.status(StatusCodes.OK).json(user);
+  } catch (e) {
+    return res.status(StatusCodes.NOT_FOUND).json({ error: e.message });
+  }
+};
 
-        const { name, email, password, date_birth } = validate.data;
+const update = async (req, res) => {
+  const validate = userSchema.partial().safeParse(req.body);
+  if (!validate.success) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ error: validate.error.format() });
+  }
 
-        // Verificação de unicidade do e-mail (manual, já que Zod não faz isso)
-        // Também é possível pensar nessa solução a partir de uma outra função, caso essa busca faça sentido em outros pontos do sistema
-        const verifyEmail = await prisma.user.findUnique({
-            where: { email },
-        });
+  try {
+    const user = await service.updateUser(req.params.id, validate.data);
+    return res.status(StatusCodes.OK).json(user);
+  } catch (e) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ error: e.message });
+  }
+};
 
-        if (verifyEmail) {
-            return res.status(StatusCodes.CONFLICT).json({
-                error: "Este e-mail já está cadastrado",
-            });
-        }
+const remove = async (req, res) => {
+  try {
+    await service.deleteUser(req.params.id);
+    return res.status(StatusCodes.NO_CONTENT).send();
+  } catch (e) {
+    return res.status(StatusCodes.NOT_FOUND).json({ error: e.message });
+  }
+};
 
-        // Criação do usuário
-        const user = await prisma.user.create({
-            data: {
-                name,
-                email,
-                password,
-                date_birth: new Date(date_birth)
-            },
-        });
-
-        // Retorna o usuário criado com o status correto baseado no protocolo HTTP.
-        res.status(StatusCodes.CREATED).json(user);
-
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ error: error.errors });
-        }
-        console.log(error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Não foi possível criar o usuário" });
-    }
-}
-
-const getAll = async (req, res) => {
-    try {
-        const users = await prisma.user.findMany();
-        res.status(StatusCodes.OK).json(users);
-    } catch (error) {
-        console.log(error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Não foi possível buscar os usuários" });
-    }
-}
-
-module.exports = { create, getAll }
+module.exports = {
+  create,
+  getAll,
+  getById,
+  update,
+  remove
+};
