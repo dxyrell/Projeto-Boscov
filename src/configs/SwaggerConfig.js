@@ -16,7 +16,8 @@ const swaggerOptions = {
   },
   apis: [
     './src/users/routes.js',   // Rota dos usuários
-    './src/movies/routes.js',  // Rota dos filmes
+    './src/movies/routes.js', // Rota dos filmes
+    './src/reviews/routes.js', // Rota das avaliações
   ],
 };
 

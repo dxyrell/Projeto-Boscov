@@ -6,7 +6,11 @@ const user = require('./users/routes');
 
 const movie = require('./movies/routes');
 
+const reviewRoutes = require('./reviews/routes');
+
 const app = express();
+
+app.use('/reviews', reviewRoutes);
 
 app.use(express.json());
 
