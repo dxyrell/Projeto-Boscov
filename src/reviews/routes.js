@@ -8,6 +8,8 @@ const router = Router();
  * /reviews:
  *   post:
  *     summary: Cadastra uma nova avaliação
+ *     tags:
+ *       - Avaliações
  *     requestBody:
  *       required: true
  *       content:
@@ -38,6 +40,8 @@ router.post('/', controller.create);
  * /reviews:
  *   get:
  *     summary: Lista todas as avaliações
+ *     tags:
+ *       - Avaliações
  *     responses:
  *       200:
  *         description: Lista de avaliações
@@ -49,6 +53,8 @@ router.get('/', controller.getAll);
  * /reviews/{idUsuario}/{idFilme}:
  *   get:
  *     summary: Retorna uma avaliação específica
+ *     tags:
+ *       - Avaliações
  *     parameters:
  *       - name: idUsuario
  *         in: path
@@ -75,6 +81,8 @@ router.get('/:idUsuario/:idFilme', controller.getById);
  * /reviews/{idUsuario}/{idFilme}:
  *   delete:
  *     summary: Remove uma avaliação
+ *     tags:
+ *       - Avaliações
  *     parameters:
  *       - name: idUsuario
  *         in: path
@@ -95,6 +103,5 @@ router.get('/:idUsuario/:idFilme', controller.getById);
  *         description: Avaliação não encontrada
  */
 router.delete('/:idUsuario/:idFilme', controller.remove);
-
 
 module.exports = router;

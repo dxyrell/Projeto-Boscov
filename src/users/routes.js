@@ -8,6 +8,8 @@ const router = Router();
  * /user:
  *   post:
  *     summary: Cria um novo usuário
+ *     tags: 
+ *       - Usuários
  *     description: Cria um novo usuário com os dados fornecidos
  *     requestBody:
  *       required: true
@@ -60,6 +62,8 @@ router.post('/', userController.create);
  * /user:
  *   get:
  *     summary: Retorna todos os usuários
+ *     tags: 
+ *       - Usuários
  *     responses:
  *       200:
  *         description: Lista de usuários
@@ -71,6 +75,8 @@ router.get('/', userController.getAll);
  * /user/{id}:
  *   get:
  *     summary: Retorna um usuário específico
+ *     tags: 
+ *      - Usuários
  *     parameters:
  *       - name: id
  *         in: path
@@ -91,6 +97,8 @@ router.get('/:id', userController.getById);
  * /user/{id}:
  *   put:
  *     summary: Atualiza um usuário existente
+ *     tags: 
+ *       - Usuários
  *     parameters:
  *       - name: id
  *         in: path
@@ -133,6 +141,8 @@ router.put('/:id', userController.update);
  * /user/{id}:
  *   delete:
  *     summary: Deleta um usuário
+ *     tags: 
+ *      - Usuários
  *     parameters:
  *       - name: id
  *         in: path

@@ -8,6 +8,8 @@ const router = Router();
  * /movies:
  *   post:
  *     summary: Cadastra um novo filme
+ *     tags: 
+ *          - Filmes
  *     requestBody:
  *       required: true
  *       content:
@@ -56,6 +58,8 @@ router.post('/', movieController.create);
  * /movies:
  *   get:
  *     summary: Lista todos os filmes
+ *     tags: 
+ *      - Filmes
  *     responses:
  *       200:
  *         description: Lista de filmes
@@ -67,6 +71,8 @@ router.get('/', movieController.getAll);
  * /movies/{id}:
  *   get:
  *     summary: Retorna um filme específico
+ *     tags: 
+ *      - Filmes
  *     parameters:
  *       - name: id
  *         in: path
@@ -86,6 +92,8 @@ router.get('/:id', movieController.getById);
  * /movies/{id}:
  *   put:
  *     summary: Atualiza um filme existente
+ *     tags: 
+ *      - Filmes
  *     parameters:
  *       - name: id
  *         in: path
@@ -130,6 +138,8 @@ router.put('/:id', movieController.update);
  * /movies/{id}:
  *   delete:
  *     summary: Remove um filme
+ *     tags: 
+ *      - Filmes
  *     parameters:
  *       - name: id
  *         in: path
