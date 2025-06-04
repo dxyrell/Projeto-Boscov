@@ -21,7 +21,8 @@ const getAll = async (_, res) => {
 
 const getById = async (req, res) => {
   try {
-    const review = await service.getReviewById(req.params.id);
+    const { idUsuario, idFilme } = req.params;
+    const review = await service.getReviewById(idUsuario, idFilme);
     res.status(StatusCodes.OK).json(review);
   } catch (err) {
     res.status(StatusCodes.NOT_FOUND).json({ error: err.message });
@@ -30,7 +31,8 @@ const getById = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
-    await service.deleteReview(req.params.id);
+    const { idUsuario, idFilme } = req.params;
+    await service.deleteReview(idUsuario, idFilme);
     res.status(StatusCodes.NO_CONTENT).send();
   } catch (err) {
     res.status(StatusCodes.NOT_FOUND).json({ error: err.message });

@@ -13,17 +13,30 @@ const getAllReviews = () => {
   });
 };
 
-const getReviewById = async (id) => {
+const getReviewById = async (idUsuario, idFilme) => {
   const review = await prisma.avaliacao.findUnique({
-    where: { id: Number(id) },
+    where: {
+      idUsuario_idFilme: {
+        idUsuario: Number(idUsuario),
+        idFilme: Number(idFilme),
+      }
+    },
     include: { usuario: true, filme: true },
   });
   if (!review) throw new Error('Avaliação não encontrada');
   return review;
 };
 
-const deleteReview = async (id) => {
-  return prisma.avaliacao.delete({ where: { id: Number(id) } });
-};
+
+const deleteReview = async (idUsuario, idFilme) => {
+  return prisma.avaliacao.delete({
+    where: {
+      idUsuario_idFilme: {
+        idUsuario: Number(idUsuario),
+        idFilme: Number(idFilme),
+      }
+    }
+
+  })};
 
 module.exports = { createReview, getAllReviews, getReviewById, deleteReview };

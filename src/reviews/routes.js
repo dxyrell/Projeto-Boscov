@@ -46,38 +46,55 @@ router.get('/', controller.getAll);
 
 /**
  * @swagger
- * /reviews/{id}:
+ * /reviews/{idUsuario}/{idFilme}:
  *   get:
  *     summary: Retorna uma avaliação específica
  *     parameters:
- *       - name: id
+ *       - name: idUsuario
  *         in: path
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID do usuário
+ *       - name: idFilme
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do filme
  *     responses:
  *       200:
  *         description: Avaliação encontrada
  *       404:
  *         description: Avaliação não encontrada
  */
-router.get('/:id', controller.getById);
+router.get('/:idUsuario/:idFilme', controller.getById);
 
 /**
  * @swagger
- * /reviews/{id}:
+ * /reviews/{idUsuario}/{idFilme}:
  *   delete:
  *     summary: Remove uma avaliação
  *     parameters:
- *       - name: id
+ *       - name: idUsuario
  *         in: path
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID do usuário
+ *       - name: idFilme
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do filme
  *     responses:
  *       204:
  *         description: Avaliação removida com sucesso
+ *       404:
+ *         description: Avaliação não encontrada
  */
-router.delete('/:id', controller.remove);
+router.delete('/:idUsuario/:idFilme', controller.remove);
+
 
 module.exports = router;
