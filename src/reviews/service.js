@@ -27,7 +27,18 @@ const getReviewById = async (idUsuario, idFilme) => {
   return review;
 };
 
+const updateReview = async (idUsuario, idFilme, data) => {
+  const result = await prisma.avaliacao.updateMany({
+    where: {
+      idUsuario: Number(idUsuario),
+      idFilme: Number(idFilme),
+    },
+    data,
+  });
 
+  if (result.count === 0) throw new Error('Avaliação não encontrada');
+  return { message: 'Avaliação atualizada com sucesso' };
+};
 const deleteReview = async (idUsuario, idFilme) => {
   return prisma.avaliacao.delete({
     where: {
@@ -39,4 +50,4 @@ const deleteReview = async (idUsuario, idFilme) => {
 
   })};
 
-module.exports = { createReview, getAllReviews, getReviewById, deleteReview };
+module.exports = { createReview, getAllReviews, getReviewById, updateReview, deleteReview };

@@ -84,6 +84,49 @@ router.get('/:idUsuario/:idFilme', verifyToken, authorize(['user', 'admin']), co
 /**
  * @swagger
  * /reviews/{idUsuario}/{idFilme}:
+ *   put:
+ *     summary: Atualiza uma avaliação
+ *     tags:
+ *       - Avaliações
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: idUsuario
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do usuário
+ *       - name: idFilme
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do filme
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nota:
+ *                 type: integer
+ *                 example: 9
+ *               comentario:
+ *                 type: string
+ *                 example: Atualização do comentário
+ *     responses:
+ *       200:
+ *         description: Avaliação atualizada com sucesso
+ *       404:
+ *         description: Avaliação não encontrada
+ */
+router.put('/:idUsuario/:idFilme', verifyToken, authorize(['user', 'admin']), controller.update);
+
+/**
+ * @swagger
+ * /reviews/{idUsuario}/{idFilme}:
  *   delete:
  *     summary: Remove uma avaliação
  *     tags:
