@@ -1,6 +1,7 @@
 const Router = require('express').Router;
 const movieController = require('./controller');
-const verifyToken = require('../auth/verifyToken'); // middleware de autenticação
+const verifyToken = require('../middlewares/verifyToken'); // middleware de autenticação
+const authorize = require('../middlewares/authorize');
 
 const router = Router();
 
@@ -53,7 +54,7 @@ const router = Router();
  *       400:
  *         description: Dados inválidos
  */
-router.post('/', verifyToken, movieController.create);
+router.post('/', verifyToken, authorize(['admin']), movieController.create);
 
 /**
  * @swagger
@@ -135,7 +136,7 @@ router.get('/:id', movieController.getById);
  *       400:
  *         description: Dados inválidos
  */
-router.put('/:id', verifyToken, movieController.update);
+router.put('/:id', verifyToken, authorize(['admin']), movieController.update);
 
 /**
  * @swagger
@@ -158,6 +159,6 @@ router.put('/:id', verifyToken, movieController.update);
  *       404:
  *         description: Filme não encontrado
  */
-router.delete('/:id', verifyToken, movieController.remove);
+router.delete('/:id', verifyToken, authorize(['admin']), movieController.remove);
 
 module.exports = router;

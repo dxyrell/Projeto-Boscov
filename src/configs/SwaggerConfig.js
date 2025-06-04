@@ -15,8 +15,9 @@ const swaggerOptions = {
     ],
     tags: [
       {
-        name: 'Usuários',
-        description: 'Operações relacionadas aos usuários',
+        name: 'Autenticação',
+        description: 'Login e autenticação dos usuários',
+
       },
       {
         name: 'Filmes',
@@ -27,8 +28,8 @@ const swaggerOptions = {
         description: 'Operações relacionadas às reviews dos filmes',
       },
       {
-        name: 'Autenticação',
-        description: 'Login e autenticação dos usuários',
+        name: 'Usuários',
+        description: 'Operações relacionadas aos usuários',
       },
     ],
     components: {

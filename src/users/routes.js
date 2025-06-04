@@ -1,6 +1,9 @@
 const Router = require('express').Router;
 const userController = require('./controller');
-const verifyToken = require('../auth/verifyToken');
+const verifyToken = require('../middlewares/verifyToken');
+const authorize = require('../middlewares/authorize');
+const checkUserId = require('../middlewares/checkUserId');
+
 
 const router = Router();
 
@@ -64,7 +67,12 @@ router.post('/', verifyToken, userController.create);
  *       200:
  *         description: Lista de usuários
  */
-router.get('/', verifyToken, userController.getAll);
+router.get(
+  '/',
+  verifyToken,
+  authorize(['admin']), // Somente admin pode listar todos
+  userController.getAll
+);
 
 /**
  * @swagger
@@ -87,7 +95,13 @@ router.get('/', verifyToken, userController.getAll);
  *       404:
  *         description: Usuário não encontrado
  */
-router.get('/:id', verifyToken, userController.getById);
+router.get(
+  '/:id',
+  verifyToken,
+  authorize(['admin', 'user']), // Ambos podem acessar, mas...
+  checkUserId, // ...users apenas seu próprio ID
+  userController.getById
+);
 
 /**
  * @swagger
@@ -132,7 +146,13 @@ router.get('/:id', verifyToken, userController.getById);
  *       400:
  *         description: Dados inválidos
  */
-router.put('/:id', verifyToken, userController.update);
+router.put(
+  '/:id',
+  verifyToken,
+  authorize(['admin', 'user']),
+  checkUserId,
+  userController.update
+);
 
 /**
  * @swagger
@@ -155,6 +175,11 @@ router.put('/:id', verifyToken, userController.update);
  *       404:
  *         description: Usuário não encontrado
  */
-router.delete('/:id', verifyToken, userController.remove);
+router.delete(
+  '/:id',
+  verifyToken,
+  authorize(['admin']),
+  userController.remove
+);
 
 module.exports = router;

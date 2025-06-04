@@ -1,6 +1,8 @@
 const Router = require('express').Router;
 const controller = require('./controller');
-const verifyToken = require('../auth/verifyToken');
+const verifyToken = require('../middlewares/verifyToken');
+const authorize = require('../middlewares/authorize');
+
 
 const router = Router();
 
@@ -36,7 +38,7 @@ const router = Router();
  *       201:
  *         description: Avaliação criada com sucesso
  */
-router.post('/', verifyToken, controller.create);
+router.post('/', verifyToken, authorize(['user', 'admin']), controller.create);
 
 /**
  * @swagger
@@ -77,7 +79,7 @@ router.get('/', controller.getAll);
  *       404:
  *         description: Avaliação não encontrada
  */
-router.get('/:idUsuario/:idFilme', controller.getById);
+router.get('/:idUsuario/:idFilme', verifyToken, authorize(['user', 'admin']), controller.getById);
 
 /**
  * @swagger
@@ -107,6 +109,6 @@ router.get('/:idUsuario/:idFilme', controller.getById);
  *       404:
  *         description: Avaliação não encontrada
  */
-router.delete('/:idUsuario/:idFilme', verifyToken, controller.remove);
+router.delete('/:idUsuario/:idFilme', verifyToken, authorize(['admin']), controller.remove);
 
 module.exports = router;
