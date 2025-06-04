@@ -1,5 +1,6 @@
 const Router = require('express').Router;
 const userController = require('./controller');
+const verifyToken = require('../auth/verifyToken');
 
 const router = Router();
 
@@ -20,32 +21,25 @@ const router = Router();
  *             properties:
  *               nome:
  *                 type: string
- *                 description: Nome do usuário
  *                 example: João Silva
  *               email:
  *                 type: string
- *                 description: Email do usuário
  *                 example: joao@email.com
  *               senha:
  *                 type: string
- *                 description: Senha do usuário
  *                 example: senha123
  *               tipoUsuario:
  *                 type: string
- *                 description: Tipo do usuário
  *                 example: admin
  *               status:
  *                 type: boolean
- *                 description: Se o usuário está ativo
  *                 example: true
  *               apelido:
  *                 type: string
- *                 description: Apelido do usuário (opcional)
  *                 example: joaos
  *               dataNascimento:
  *                 type: string
  *                 format: date
- *                 description: Data de nascimento do usuário
  *                 example: 2000-01-01
  *     responses:
  *       201:
@@ -55,7 +49,7 @@ const router = Router();
  *       409:
  *         description: E-mail já cadastrado
  */
-router.post('/', userController.create);
+router.post('/', verifyToken, userController.create);
 
 /**
  * @swagger
@@ -64,11 +58,13 @@ router.post('/', userController.create);
  *     summary: Retorna todos os usuários
  *     tags: 
  *       - Usuários
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de usuários
  */
-router.get('/', userController.getAll);
+router.get('/', verifyToken, userController.getAll);
 
 /**
  * @swagger
@@ -76,21 +72,22 @@ router.get('/', userController.getAll);
  *   get:
  *     summary: Retorna um usuário específico
  *     tags: 
- *      - Usuários
+ *       - Usuários
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID do usuário
  *     responses:
  *       200:
  *         description: Usuário encontrado
  *       404:
  *         description: Usuário não encontrado
  */
-router.get('/:id', userController.getById);
+router.get('/:id', verifyToken, userController.getById);
 
 /**
  * @swagger
@@ -99,13 +96,14 @@ router.get('/:id', userController.getById);
  *     summary: Atualiza um usuário existente
  *     tags: 
  *       - Usuários
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID do usuário
  *     requestBody:
  *       required: true
  *       content:
@@ -134,7 +132,7 @@ router.get('/:id', userController.getById);
  *       400:
  *         description: Dados inválidos
  */
-router.put('/:id', userController.update);
+router.put('/:id', verifyToken, userController.update);
 
 /**
  * @swagger
@@ -142,20 +140,21 @@ router.put('/:id', userController.update);
  *   delete:
  *     summary: Deleta um usuário
  *     tags: 
- *      - Usuários
+ *       - Usuários
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID do usuário
  *     responses:
  *       204:
  *         description: Usuário deletado com sucesso
  *       404:
  *         description: Usuário não encontrado
  */
-router.delete('/:id', userController.remove);
+router.delete('/:id', verifyToken, userController.remove);
 
 module.exports = router;

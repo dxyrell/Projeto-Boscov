@@ -8,6 +8,11 @@ const swaggerOptions = {
       version: '1.0.0',
       description: 'API para gerenciamento de usuários, filmes e avaliações',
     },
+    servers: [
+      {
+        url: 'http://localhost:3000',
+      },
+    ],
     tags: [
       {
         name: 'Usuários',
@@ -26,17 +31,23 @@ const swaggerOptions = {
         description: 'Login e autenticação dos usuários',
       },
     ],
-    servers: [
-      {
-        url: 'http://localhost:3000',
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
       },
-    ],
+    },
+    // Aplica o JWT globalmente a todas as rotas (opcional)
+    // security: [{ bearerAuth: [] }],
   },
   apis: [
-    './src/auth/routes.js',     // Rota de login/autenticação
-    './src/users/routes.js',    // Rota de usuários
-    './src/movies/routes.js',   // Rota de filmes
-    './src/reviews/routes.js',  // Rota de avaliações
+    './src/auth/routes.js',
+    './src/users/routes.js',
+    './src/movies/routes.js',
+    './src/reviews/routes.js',
   ],
 };
 

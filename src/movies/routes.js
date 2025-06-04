@@ -1,5 +1,6 @@
 const Router = require('express').Router;
 const movieController = require('./controller');
+const verifyToken = require('../auth/verifyToken'); // middleware de autenticação
 
 const router = Router();
 
@@ -8,8 +9,10 @@ const router = Router();
  * /movies:
  *   post:
  *     summary: Cadastra um novo filme
- *     tags: 
- *          - Filmes
+ *     tags:
+ *       - Filmes
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -41,7 +44,6 @@ const router = Router();
  *                 example: https://m.media-amazon.com/images/I/81xRxNj2uUL._AC_SY679_.jpg
  *               generos:
  *                 type: array
- *                 description: Lista de IDs dos gêneros relacionados ao filme
  *                 items:
  *                   type: integer
  *                 example: [1, 4]
@@ -51,15 +53,15 @@ const router = Router();
  *       400:
  *         description: Dados inválidos
  */
-router.post('/', movieController.create);
+router.post('/', verifyToken, movieController.create);
 
 /**
  * @swagger
  * /movies:
  *   get:
  *     summary: Lista todos os filmes
- *     tags: 
- *      - Filmes
+ *     tags:
+ *       - Filmes
  *     responses:
  *       200:
  *         description: Lista de filmes
@@ -71,8 +73,8 @@ router.get('/', movieController.getAll);
  * /movies/{id}:
  *   get:
  *     summary: Retorna um filme específico
- *     tags: 
- *      - Filmes
+ *     tags:
+ *       - Filmes
  *     parameters:
  *       - name: id
  *         in: path
@@ -92,8 +94,10 @@ router.get('/:id', movieController.getById);
  * /movies/{id}:
  *   put:
  *     summary: Atualiza um filme existente
- *     tags: 
- *      - Filmes
+ *     tags:
+ *       - Filmes
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -131,15 +135,17 @@ router.get('/:id', movieController.getById);
  *       400:
  *         description: Dados inválidos
  */
-router.put('/:id', movieController.update);
+router.put('/:id', verifyToken, movieController.update);
 
 /**
  * @swagger
  * /movies/{id}:
  *   delete:
  *     summary: Remove um filme
- *     tags: 
- *      - Filmes
+ *     tags:
+ *       - Filmes
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -152,6 +158,6 @@ router.put('/:id', movieController.update);
  *       404:
  *         description: Filme não encontrado
  */
-router.delete('/:id', movieController.remove);
+router.delete('/:id', verifyToken, movieController.remove);
 
 module.exports = router;

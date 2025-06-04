@@ -1,9 +1,12 @@
 const Router = require('express').Router;
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const prisma = require('../../prisma/prismaClient');
 const { StatusCodes } = require('http-status-codes');
 
 const router = Router();
+
+const SECRET = process.env.JWT_SECRET || 'chave-muito-segura';
 
 /**
  * @swagger
@@ -31,6 +34,8 @@ const router = Router();
  *       401:
  *         description: Credenciais inválidas
  */
+
+
 router.post('/login', async (req, res) => {
   const { email, senha } = req.body;
 
@@ -41,12 +46,22 @@ router.post('/login', async (req, res) => {
       return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Credenciais inválidas' });
     }
 
+    const token = jwt.sign(
+      {
+        id: usuario.id,
+        tipo: usuario.tipoUsuario,
+        nome: usuario.nome,
+        email: usuario.email,
+      },
+      SECRET,
+      { expiresIn: '2h' }
+    );
+
     res.status(StatusCodes.OK).json({
-      id: usuario.id,
-      nome: usuario.nome,
-      email: usuario.email,
-      tipoUsuario: usuario.tipoUsuario,
+      mensagem: 'Login realizado com sucesso',
+      token,
     });
+
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
   }

@@ -1,5 +1,6 @@
 const Router = require('express').Router;
 const controller = require('./controller');
+const verifyToken = require('../auth/verifyToken');
 
 const router = Router();
 
@@ -10,6 +11,8 @@ const router = Router();
  *     summary: Cadastra uma nova avaliação
  *     tags:
  *       - Avaliações
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -33,7 +36,7 @@ const router = Router();
  *       201:
  *         description: Avaliação criada com sucesso
  */
-router.post('/', controller.create);
+router.post('/', verifyToken, controller.create);
 
 /**
  * @swagger
@@ -83,6 +86,8 @@ router.get('/:idUsuario/:idFilme', controller.getById);
  *     summary: Remove uma avaliação
  *     tags:
  *       - Avaliações
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: idUsuario
  *         in: path
@@ -102,6 +107,6 @@ router.get('/:idUsuario/:idFilme', controller.getById);
  *       404:
  *         description: Avaliação não encontrada
  */
-router.delete('/:idUsuario/:idFilme', controller.remove);
+router.delete('/:idUsuario/:idFilme', verifyToken, controller.remove);
 
 module.exports = router;
