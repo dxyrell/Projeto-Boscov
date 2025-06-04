@@ -6,7 +6,7 @@ function authorize(allowedRoles) {
       return res.status(401).json({ error: 'Não autenticado' });
     }
 
-    if (!allowedRoles.includes(usuario.tipoUsuario)) {
+    if (!allowedRoles.includes(usuario.tipo)) {
       return res.status(403).json({ error: 'Acesso negado: permissão insuficiente' });
     }
 

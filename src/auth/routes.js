@@ -59,6 +59,12 @@ router.post('/login', async (req, res) => {
 
     res.status(StatusCodes.OK).json({
       mensagem: 'Login realizado com sucesso',
+      user: {
+        id: usuario.id,
+        nome: usuario.nome,
+        email: usuario.email,
+        tipoUsuario: usuario.tipoUsuario,
+      },
       token,
     });
 
@@ -67,4 +73,4 @@ router.post('/login', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = router;

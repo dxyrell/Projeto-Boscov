@@ -9,6 +9,11 @@ const reviewRoutes = require('./reviews/routes');
 
 const app = express();
 
+app.get('/swagger.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerDocs);
+});
+
 app.use(express.json()); 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
