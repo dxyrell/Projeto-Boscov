@@ -52,7 +52,7 @@ const router = Router();
  *       409:
  *         description: E-mail já cadastrado
  */
-router.post('/', verifyToken, userController.create);
+router.post('/', userController.create);
 
 /**
  * @swagger
