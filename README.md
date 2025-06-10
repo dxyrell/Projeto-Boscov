@@ -78,12 +78,22 @@ npx prisma migrate dev --name init
 ## ▶️ Iniciando o Servidor
 
 ```bash
-npm run dev
+npm start
 ```
 
 Servidor iniciado em: `http://localhost:3000`
 
 ---
+## ▶️ Acessando prisma
+
+```bash
+npx prisma studio
+```
+
+Servidor iniciado em: `http://localhost:5555`
+
+---
+
 
 ## 📒 Acessando o Swagger (Documentação)
 
