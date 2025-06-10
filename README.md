@@ -1,4 +1,4 @@
-#Projeto Boscov — Backend
+# Projeto Boscov — Backend
 
 API RESTful para gerenciamento de **usuários**, **filmes** e **avaliações**, desenvolvida com Node.js, Express, Prisma e JWT.
 Este repositório contém apenas o **backend** do projeto.
